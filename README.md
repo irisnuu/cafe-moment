@@ -1,6 +1,6 @@
-# 咖啡时刻 - Coffee Moments
+# 咖啡时刻 - Cafe Moment
 
-一个展示咖啡故事和知识的静态网站，采用简约现代的咖啡主题设计。
+一个展示咖啡故事和知识的静态网站，采用 Hugo 静态站点生成器构建，支持 Markdown 文章编写和自动部署到 Cloudflare Pages。
 
 ## 功能特性
 
@@ -10,153 +10,133 @@
 - 📝 **Markdown支持** - 文章支持Markdown语法编写
 - 🖼️ **图片展示** - 支持在文章中插入图片
 - 🎨 **现代化UI** - 采用现代设计语言和交互效果
+- 🚀 **自动部署** - 推送到 GitHub 后自动部署到 Cloudflare Pages
 
-## 网站结构
+## 项目结构
 
 ```
 cafe-moment/
-├── index.html          # 主页
-├── styles.css          # 样式文件
-├── script.js           # JavaScript功能
-├── articles/           # 文章目录
-│   ├── my-first-coffee.html
-│   ├── coffee-and-friendship.html
-│   └── pour-over-art.html
-├── images/             # 图片目录
-└── README.md           # 说明文档
+├── hugo-site/              # Hugo 静态站点
+│   ├── config.toml         # Hugo 配置文件
+│   ├── content/            # 内容目录
+│   │   ├── _index.md       # 主页内容
+│   │   └── stories/        # 文章目录
+│   │       ├── _index.md   # 故事页面内容
+│   │       ├── my-first-coffee.md
+│   │       ├── coffee-and-friendship.md
+│   │       └── pour-over-art.md
+│   ├── themes/             # 主题目录
+│   │   └── cafe-moment/    # 自定义主题
+│   │       ├── layouts/    # 模板文件
+│   │       └── assets/     # 静态资源
+│   ├── static/             # 静态文件
+│   │   └── images/         # 图片文件
+│   └── .github/            # GitHub Actions
+│       └── workflows/      # 部署工作流
+├── DEPLOYMENT-GUIDE.md     # 部署指南
+└── README.md               # 说明文档
 ```
 
-## 使用方法
+## 本地开发
 
-### 1. 添加新文章
+### 1. 安装 Hugo
 
-1. 在 `articles/` 目录下创建新的HTML文件
-2. 使用以下模板结构：
+确保您的系统已安装 Hugo Extended 版本：
 
-```html
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文章标题</title>
-    <link rel="stylesheet" href="../styles.css">
-    <style>
-        .article-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 120px 20px 40px;
-        }
-        .article-title {
-            font-size: 2.5rem;
-            color: #2c1810;
-            margin-bottom: 2rem;
-        }
-        .article-content {
-            line-height: 1.8;
-            color: #2c1810;
-            font-size: 1.1rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 3rem;
-            color: #8b4513;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-brand">
-                <h1 class="logo">咖啡时刻</h1>
-                <span class="logo-en">Coffee Moments</span>
-            </div>
-            <div class="nav-menu">
-                <a href="../index.html" class="nav-link">首页</a>
-                <a href="../index.html#stories" class="nav-link">咖啡故事</a>
-                <a href="../index.html#knowledge" class="nav-link">咖啡知识</a>
-                <a href="../index.html#about" class="nav-link">关于</a>
-            </div>
-        </nav>
-    </header>
+```bash
+# Windows (使用 Chocolatey)
+choco install hugo-extended
 
-    <main class="article-container">
-        <article>
-            <h1 class="article-title">文章标题</h1>
-            
-            <div class="article-content">
-                <!-- 在这里添加文章内容 -->
-                <p>文章内容...</p>
-                
-                <!-- 插入图片 -->
-                <img src="../images/your-image.jpg" alt="图片描述">
-                
-                <h2>小标题</h2>
-                <p>更多内容...</p>
-            </div>
+# macOS (使用 Homebrew)
+brew install hugo
 
-            <a href="../index.html" class="back-link">← 返回首页</a>
-        </article>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p class="footer-text">© 2024 咖啡时刻. 用❤️和☕制作</p>
-        </div>
-    </footer>
-
-    <script src="../script.js"></script>
-</body>
-</html>
+# Linux
+# 请参考 Hugo 官方文档安装
 ```
 
-### 2. 添加图片
+### 2. 启动开发服务器
 
-1. 将图片文件放入 `images/` 目录
-2. 在文章中使用相对路径引用图片：
-   ```html
-   <img src="../images/your-image.jpg" alt="图片描述">
-   ```
-
-### 3. 更新主页
-
-在 `index.html` 中的故事卡片部分添加新文章的链接：
-
-```html
-<article class="story-card">
-    <div class="story-image">
-        <img src="images/story-image.jpg" alt="文章标题">
-    </div>
-    <div class="story-content">
-        <h3 class="story-title">文章标题</h3>
-        <p class="story-excerpt">文章摘要...</p>
-        <a href="articles/your-article.html" class="read-more">阅读更多</a>
-    </div>
-</article>
+```bash
+cd hugo-site
+hugo server -D
 ```
 
-## 自定义样式
+访问 http://localhost:1313 查看网站。
 
-### 颜色主题
+### 3. 构建静态文件
 
-网站使用咖啡色调：
-- 主色调：`#8b4513` (深棕色)
-- 辅助色：`#a0522d` (中棕色)
-- 文字色：`#2c1810` (深褐色)
-- 背景色：`#faf8f5` (米白色)
+```bash
+cd hugo-site
+hugo
+```
 
-### 字体
+生成的静态文件将保存在 `public/` 目录中。
 
-- 中文：Noto Sans SC
-- 英文：Inter
+## 添加新文章
+
+### 1. 创建新文章
+
+在 `hugo-site/content/stories/` 目录下创建新的 `.md` 文件：
+
+```markdown
+---
+title: "文章标题"
+date: 2024-01-15
+description: "文章描述"
+tags: ["标签1", "标签2"]
+categories: ["分类"]
+featured_image: "/images/featured-image.jpg"
+draft: false
+---
+
+文章内容...
+```
+
+### 2. 文章格式
+
+- **Front Matter**: 使用 YAML 格式定义文章元数据
+- **内容**: 支持 Markdown 语法
+- **图片**: 将图片放在 `hugo-site/static/images/` 目录下
+
+### 3. 文章分类
+
+- `stories/`: 咖啡故事类文章
+- `knowledge/`: 咖啡知识类文章
+
+## 自定义主题
+
+主题文件位于 `hugo-site/themes/cafe-moment/` 目录：
+
+- `layouts/`: HTML 模板文件
+- `assets/css/`: CSS 样式文件
+- `assets/js/`: JavaScript 文件
+
+## 部署
+
+### 自动部署到 Cloudflare Pages
+
+1. 将代码推送到 GitHub 仓库
+2. 在 Cloudflare Pages 中连接 GitHub 仓库
+3. 设置构建配置：
+   - 构建命令：`hugo`
+   - 输出目录：`public`
+   - Node.js 版本：18.x
+
+### 手动部署
+
+```bash
+cd hugo-site
+hugo
+# 将 public/ 目录的内容上传到您的 Web 服务器
+```
 
 ## 技术栈
 
-- HTML5
-- CSS3 (Grid, Flexbox, 响应式设计)
-- JavaScript (ES6+)
-- Google Fonts
+- **Hugo**: 静态站点生成器
+- **Markdown**: 内容编写格式
+- **HTML/CSS/JavaScript**: 前端技术
+- **GitHub Actions**: 自动化部署
+- **Cloudflare Pages**: 托管平台
 
 ## 浏览器支持
 
@@ -164,16 +144,6 @@ cafe-moment/
 - Firefox 55+
 - Safari 12+
 - Edge 79+
-
-## 部署
-
-这是一个纯静态网站，可以部署到任何静态网站托管服务：
-
-- GitHub Pages
-- Netlify
-- Vercel
-- 阿里云OSS
-- 腾讯云COS
 
 ## 许可证
 

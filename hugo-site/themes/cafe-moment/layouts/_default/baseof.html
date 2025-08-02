@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "zh-cn" }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Description }}{{ end }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/favicon-new.svg">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    {{ $style := resources.Get "css/main.css" | resources.Minify }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+    <meta property="og:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Description }}{{ end }}">
+    <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+    <meta property="og:url" content="{{ .Permalink }}">
+    {{ if .Params.featured_image }}
+    <meta property="og:image" content="{{ .Params.featured_image | absURL }}">
+    {{ end }}
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+    <meta name="twitter:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Description }}{{ end }}">
+    {{ if .Params.featured_image }}
+    <meta name="twitter:image" content="{{ .Params.featured_image | absURL }}">
+    {{ end }}
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <a href="{{ .Site.BaseURL }}">
+                    <h1 class="logo">{{ .Site.Title }}</h1>
+                    <span class="logo-en">Cafe Moment</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}" class="nav-link" data-zh="{{ .Name }}" data-en="{{ if eq .Name "首页" }}Home{{ else if eq .Name "咖啡故事" }}Stories{{ else if eq .Name "咖啡知识" }}Knowledge{{ else if eq .Name "关于" }}About{{ else }}{{ .Name }}{{ end }}">{{ .Name }}</a>
+                {{ end }}
+                <button class="lang-toggle" data-zh="中文" data-en="EN">EN</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; {{ now.Year }} {{ .Site.Title }}. 探索咖啡的世界，分享咖啡师的故事。</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    {{ $script := resources.Get "js/main.js" | resources.Minify }}
+    <script src="{{ $script.RelPermalink }}"></script>
+</body>
+</html> 

@@ -1,0 +1,6 @@
+{
+  "title": "{{ .Title }}",
+  "description": "{{ .Description }}",
+  "url": "{{ .Permalink }}",
+  "type": "website"
+} 

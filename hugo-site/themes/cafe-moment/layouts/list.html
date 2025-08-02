@@ -1,0 +1,41 @@
+{{ define "main" }}
+<div class="list-page">
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">{{ .Title }}</h1>
+            {{ if .Description }}
+            <p class="page-description">{{ .Description }}</p>
+            {{ end }}
+        </header>
+        
+        <div class="articles-grid">
+            {{ range .Pages }}
+            <article class="article-card">
+                <div class="article-image">
+                    {{ if .Params.featured_image }}
+                    <img src="{{ .Params.featured_image }}" alt="{{ .Title }}">
+                    {{ end }}
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title">
+                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    </h2>
+                    <p class="article-excerpt">{{ .Description }}</p>
+                    <div class="article-meta">
+                        <time class="article-date">{{ .Date.Format "2006-01-02" }}</time>
+                        {{ if .Params.tags }}
+                        <div class="article-tags">
+                            {{ range first 3 .Params.tags }}
+                            <span class="tag">{{ . }}</span>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                    </div>
+                    <a href="{{ .RelPermalink }}" class="read-more">阅读更多</a>
+                </div>
+            </article>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ end }} 
