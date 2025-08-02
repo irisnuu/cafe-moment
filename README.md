@@ -1,6 +1,6 @@
 # 咖啡时刻 - Cafe Moment
 
-一个展示咖啡故事和知识的静态网站，采用 Hugo 静态站点生成器构建，支持 Markdown 文章编写和自动部署到 Cloudflare Pages。
+我的个人咖啡分享网站，采用 Hugo 静态站点生成器构建，支持 Markdown 文章编写和自动部署到 Cloudflare Pages。
 
 ## 功能特性
 
@@ -77,7 +77,7 @@ hugo
 
 ### 1. 创建新文章
 
-在 `content/stories/` 目录下创建新的 `.md` 文件：
+在 `content/stories/` 或 `content/knowledge/` 目录下创建新的 `.md` 文件：
 
 ```markdown
 ---
@@ -151,4 +151,4 @@ MIT License
 
 ---
 
-用❤️和☕制作的咖啡主题网站 
+用❤️和☕制作的个人咖啡分享网站 

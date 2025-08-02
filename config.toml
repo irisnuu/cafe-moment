@@ -4,8 +4,8 @@ title = '咖啡时刻'
 theme = 'cafe-moment'
 
 [params]
-  description = "探索咖啡的世界，分享咖啡师的故事和技艺"
-  author = "咖啡师"
+  description = "探索咖啡的世界，分享我的咖啡故事和技艺"
+  author = "咖啡爱好者"
   github = "your-github-username"
   
   # 导航菜单
