@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 文章查看器 - 咖啡时刻</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .markdown-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .markdown-content {
+            line-height: 1.8;
+            color: #2c1810;
+        }
+        
+        .markdown-content h1 {
+            color: #8b4513;
+            border-bottom: 2px solid #f0e6d2;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .markdown-content h2 {
+            color: #8b4513;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .markdown-content h3 {
+            color: #a0522d;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .markdown-content ul, .markdown-content ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .markdown-content blockquote {
+            border-left: 4px solid #8b4513;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #6b4423;
+        }
+        
+        .markdown-content code {
+            background: #f5f1eb;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .markdown-content pre {
+            background: #f5f1eb;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .markdown-content strong {
+            color: #8b4513;
+        }
+        
+        .markdown-content em {
+            color: #6b4423;
+        }
+        
+        .markdown-content hr {
+            border: none;
+            border-top: 2px solid #f0e6d2;
+            margin: 2rem 0;
+        }
+        
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f0e6d2;
+        }
+        
+        .article-nav a {
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 1px solid #8b4513;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .article-nav a:hover {
+            background: #8b4513;
+            color: white;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .back-to-home a {
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 1px solid #8b4513;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-home a:hover {
+            background: #8b4513;
+            color: white;
+        }
+        
+        .article-meta {
+            background: #faf8f5;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #6b4423;
+        }
+        
+        .article-meta .tags {
+            margin-top: 0.5rem;
+        }
+        
+        .article-meta .tags span {
+            background: #8b4513;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1 class="logo">咖啡时刻</h1>
+                <span class="logo-en">Cafe Moment</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link" data-lang="zh">首页</a>
+                <a href="index.html" class="nav-link" data-lang="en" style="display: none;">Home</a>
+                <a href="index.html#stories" class="nav-link" data-lang="zh">咖啡故事</a>
+                <a href="index.html#stories" class="nav-link" data-lang="en" style="display: none;">Stories</a>
+                <a href="index.html#knowledge" class="nav-link" data-lang="zh">咖啡知识</a>
+                <a href="index.html#knowledge" class="nav-link" data-lang="en" style="display: none;">Knowledge</a>
+                <a href="index.html#about" class="nav-link" data-lang="zh">关于</a>
+                <a href="index.html#about" class="nav-link" data-lang="en" style="display: none;">About</a>
+                <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding-top: 120px; min-height: 100vh; background: #faf8f5;">
+        <div class="markdown-container">
+            <div id="article-content" class="markdown-content">
+                <!-- Markdown内容将在这里显示 -->
+            </div>
+            
+            <div class="article-nav">
+                <a href="#" id="prev-article">← 上一篇</a>
+                <a href="#" id="next-article">下一篇 →</a>
+            </div>
+            
+            <div class="back-to-home">
+                <a href="index.html">← 返回首页</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // 文章列表
+        const articles = [
+            {
+                id: 'my-first-coffee',
+                title: '专业咖啡师的启蒙之路',
+                file: 'articles/my-first-coffee.md',
+                prev: null,
+                next: 'coffee-and-friendship'
+            },
+            {
+                id: 'coffee-and-friendship',
+                title: '咖啡师社群：技艺交流与友谊',
+                file: 'articles/coffee-and-friendship.md',
+                prev: 'my-first-coffee',
+                next: 'pour-over-art'
+            },
+            {
+                id: 'pour-over-art',
+                title: '手冲咖啡：精确萃取的技艺',
+                file: 'articles/pour-over-art.md',
+                prev: 'coffee-and-friendship',
+                next: null
+            }
+        ];
+
+        // 获取URL参数
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 加载文章
+        async function loadArticle(articleId) {
+            const article = articles.find(a => a.id === articleId);
+            if (!article) {
+                console.error('文章未找到');
+                return;
+            }
+
+            try {
+                const response = await fetch(article.file);
+                const markdown = await response.text();
+                
+                // 使用marked.js转换Markdown为HTML
+                const html = marked.parse(markdown);
+                document.getElementById('article-content').innerHTML = html;
+                
+                // 更新导航链接
+                updateNavigation(article);
+                
+                // 更新页面标题
+                document.title = `${article.title} - 咖啡时刻`;
+                
+            } catch (error) {
+                console.error('加载文章失败:', error);
+                document.getElementById('article-content').innerHTML = '<p>文章加载失败，请稍后重试。</p>';
+            }
+        }
+
+        // 更新导航
+        function updateNavigation(article) {
+            const prevLink = document.getElementById('prev-article');
+            const nextLink = document.getElementById('next-article');
+            
+            if (article.prev) {
+                const prevArticle = articles.find(a => a.id === article.prev);
+                prevLink.href = `markdown-viewer.html?article=${article.prev}`;
+                prevLink.textContent = `← ${prevArticle.title}`;
+                prevLink.style.display = 'inline';
+            } else {
+                prevLink.style.display = 'none';
+            }
+            
+            if (article.next) {
+                const nextArticle = articles.find(a => a.id === article.next);
+                nextLink.href = `markdown-viewer.html?article=${article.next}`;
+                nextLink.textContent = `${nextArticle.title} →`;
+                nextLink.style.display = 'inline';
+            } else {
+                nextLink.style.display = 'none';
+            }
+        }
+
+        // 页面加载时加载文章
+        document.addEventListener('DOMContentLoaded', function() {
+            const articleId = getUrlParameter('article') || 'my-first-coffee';
+            loadArticle(articleId);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 编辑器 - 咖啡时刻</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .editor-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .editor-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .editor-header h1 {
+            color: #8b4513;
+            margin-bottom: 1rem;
+        }
+        
+        .editor-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            height: 70vh;
+        }
+        
+        .editor-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .editor-section h3 {
+            background: #8b4513;
+            color: white;
+            margin: 0;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .markdown-input {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            background: #faf8f5;
+        }
+        
+        .markdown-preview {
+            padding: 1rem;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            line-height: 1.8;
+            color: #2c1810;
+        }
+        
+        .editor-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #8b4513;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #a0522d;
+        }
+        
+        .btn-secondary {
+            background: #f5f1eb;
+            color: #8b4513;
+            border: 1px solid #8b4513;
+        }
+        
+        .btn-secondary:hover {
+            background: #8b4513;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1 class="logo">咖啡时刻</h1>
+                <span class="logo-en">Cafe Moment</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link" data-lang="zh">首页</a>
+                <a href="index.html" class="nav-link" data-lang="en" style="display: none;">Home</a>
+                <a href="index.html#stories" class="nav-link" data-lang="zh">咖啡故事</a>
+                <a href="index.html#stories" class="nav-link" data-lang="en" style="display: none;">Stories</a>
+                <a href="index.html#knowledge" class="nav-link" data-lang="zh">咖啡知识</a>
+                <a href="index.html#knowledge" class="nav-link" data-lang="en" style="display: none;">Knowledge</a>
+                <a href="index.html#about" class="nav-link" data-lang="zh">关于</a>
+                <a href="index.html#about" class="nav-link" data-lang="en" style="display: none;">About</a>
+                <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding-top: 120px; min-height: 100vh; background: #faf8f5;">
+        <div class="editor-container">
+            <div class="editor-header">
+                <h1>Markdown 文章编辑器</h1>
+                <p>使用Markdown格式撰写您的咖啡故事</p>
+            </div>
+            
+            <div class="editor-layout">
+                <div class="editor-section">
+                    <h3>编辑区域</h3>
+                    <textarea id="markdown-input" class="markdown-input" placeholder="在这里输入您的Markdown内容..."></textarea>
+                </div>
+                
+                <div class="editor-section">
+                    <h3>预览区域</h3>
+                    <div id="markdown-preview" class="markdown-preview">
+                        <p style="color: #6b4423; text-align: center; margin-top: 2rem;">
+                            在左侧输入Markdown内容，右侧将实时显示预览效果
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="editor-controls">
+                <div class="control-buttons">
+                    <button class="btn btn-primary" onclick="saveArticle()">保存文章</button>
+                    <button class="btn btn-secondary" onclick="clearEditor()">清空编辑器</button>
+                    <button class="btn btn-secondary" onclick="downloadMarkdown()">下载Markdown</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        const markdownInput = document.getElementById('markdown-input');
+        const markdownPreview = document.getElementById('markdown-preview');
+        
+        // 实时预览
+        markdownInput.addEventListener('input', function() {
+            const markdown = this.value;
+            const html = marked.parse(markdown);
+            markdownPreview.innerHTML = html;
+        });
+        
+        // 保存文章
+        function saveArticle() {
+            const content = markdownInput.value;
+            if (!content.trim()) {
+                alert('请先输入文章内容');
+                return;
+            }
+            
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'coffee-article.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('文章已保存为 coffee-article.md');
+        }
+        
+        // 清空编辑器
+        function clearEditor() {
+            if (confirm('确定要清空编辑器吗？')) {
+                markdownInput.value = '';
+                markdownInput.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        // 下载Markdown
+        function downloadMarkdown() {
+            const content = markdownInput.value;
+            if (!content.trim()) {
+                alert('请先输入文章内容');
+                return;
+            }
+            
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            const filename = `coffee-article-${timestamp}.md`;
+            
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`文章已下载为 ${filename}`);
+        }
+    </script>
+</body>
+</html> 
