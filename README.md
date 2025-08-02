@@ -16,23 +16,26 @@
 
 ```
 cafe-moment/
-├── hugo-site/              # Hugo 静态站点
-│   ├── config.toml         # Hugo 配置文件
-│   ├── content/            # 内容目录
-│   │   ├── _index.md       # 主页内容
-│   │   └── stories/        # 文章目录
-│   │       ├── _index.md   # 故事页面内容
-│   │       ├── my-first-coffee.md
-│   │       ├── coffee-and-friendship.md
-│   │       └── pour-over-art.md
-│   ├── themes/             # 主题目录
-│   │   └── cafe-moment/    # 自定义主题
-│   │       ├── layouts/    # 模板文件
-│   │       └── assets/     # 静态资源
-│   ├── static/             # 静态文件
-│   │   └── images/         # 图片文件
-│   └── .github/            # GitHub Actions
-│       └── workflows/      # 部署工作流
+├── config.toml             # Hugo 配置文件
+├── content/                # 内容目录
+│   ├── _index.md           # 主页内容
+│   ├── stories/            # 文章目录
+│   │   ├── _index.md       # 故事页面内容
+│   │   ├── my-first-coffee.md
+│   │   └── coffee-and-friendship.md
+│   ├── knowledge/          # 知识目录
+│   │   ├── _index.md       # 知识页面内容
+│   │   └── pour-over-art.md
+│   └── about/              # 关于页面
+│       └── _index.md       # 关于页面内容
+├── themes/                 # 主题目录
+│   └── cafe-moment/        # 自定义主题
+│       ├── layouts/        # 模板文件
+│       └── assets/         # 静态资源
+├── static/                 # 静态文件
+│   └── images/             # 图片文件
+├── .github/                # GitHub Actions
+│   └── workflows/          # 部署工作流
 ├── DEPLOYMENT-GUIDE.md     # 部署指南
 └── README.md               # 说明文档
 ```
@@ -57,7 +60,6 @@ brew install hugo
 ### 2. 启动开发服务器
 
 ```bash
-cd hugo-site
 hugo server -D
 ```
 
@@ -66,7 +68,6 @@ hugo server -D
 ### 3. 构建静态文件
 
 ```bash
-cd hugo-site
 hugo
 ```
 
@@ -76,7 +77,7 @@ hugo
 
 ### 1. 创建新文章
 
-在 `hugo-site/content/stories/` 目录下创建新的 `.md` 文件：
+在 `content/stories/` 目录下创建新的 `.md` 文件：
 
 ```markdown
 ---
@@ -96,7 +97,7 @@ draft: false
 
 - **Front Matter**: 使用 YAML 格式定义文章元数据
 - **内容**: 支持 Markdown 语法
-- **图片**: 将图片放在 `hugo-site/static/images/` 目录下
+- **图片**: 将图片放在 `static/images/` 目录下
 
 ### 3. 文章分类
 
@@ -105,7 +106,7 @@ draft: false
 
 ## 自定义主题
 
-主题文件位于 `hugo-site/themes/cafe-moment/` 目录：
+主题文件位于 `themes/cafe-moment/` 目录：
 
 - `layouts/`: HTML 模板文件
 - `assets/css/`: CSS 样式文件
@@ -125,7 +126,6 @@ draft: false
 ### 手动部署
 
 ```bash
-cd hugo-site
 hugo
 # 将 public/ 目录的内容上传到您的 Web 服务器
 ```
